@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="现代创意工作室 - 提供前沿Web解决方案与创新设计，重塑数字体验">
+    <title>星尘研习社 | 创意数字工坊</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: radial-gradient(circle at 10% 20%, rgba(10, 12, 28, 1) 0%, rgba(2, 5, 18, 1) 100%);
+            color: #f0f3fa;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0c1c;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b3f6e;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5f68b5;
+        }
+
+        /* 背景动态光晕效果 */
+        .glow-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .glow-bg::before {
+            content: '';
+            position: absolute;
+            width: 80vw;
+            height: 80vw;
+            background: radial-gradient(circle, rgba(80, 70, 200, 0.2) 0%, rgba(0, 0, 0, 0) 70%);
+            top: -20vh;
+            left: -20vw;
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: floatGlow 18s infinite alternate ease-in-out;
+        }
+        .glow-bg::after {
+            content: '';
+            position: absolute;
+            width: 70vw;
+            height: 70vw;
+            background: radial-gradient(circle, rgba(0, 180, 216, 0.18) 0%, rgba(0, 0, 0, 0) 70%);
+            bottom: -15vh;
+            right: -15vw;
+            border-radius: 50%;
+            filter: blur(100px);
+            animation: floatGlowSecond 22s infinite alternate ease-in-out;
+        }
+
+        @keyframes floatGlow {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.6; }
+            100% { transform: translate(5%, 8%) scale(1.2); opacity: 0.9; }
+        }
+        @keyframes floatGlowSecond {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+            100% { transform: translate(-5%, -5%) scale(1.3); opacity: 0.8; }
+        }
+
+        /* 导航栏 */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 2rem;
+            max-width: 1300px;
+            margin: 0 auto;
+            backdrop-filter: blur(12px);
+            background: rgba(5, 7, 20, 0.6);
+            border-radius: 0 0 32px 32px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.7rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #E0E7FF, #A5B4FC, #818CF8);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+            cursor: default;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #e2e8f0;
+            font-weight: 500;
+            transition: 0.2s ease;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #c7d2fe;
+            text-shadow: 0 0 8px rgba(165, 180, 252, 0.6);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #a5b4fc, #6366f1);
+            transition: width 0.25s ease;
+            border-radius: 2px;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* 主要内容容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero 区域 */
+        .hero {
+            min-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem 0 4rem;
+        }
+
+        .hero-badge {
+            background: rgba(129, 140, 248, 0.2);
+            backdrop-filter: blur(4px);
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #c7d2fe;
+            border: 1px solid rgba(129, 140, 248, 0.4);
+            margin-bottom: 1.5rem;
+            display: inline-block;
+        }
+
+        .hero h1 {
+            font-size: 3.8rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #FFFFFF, #c7d2fe, #a5b4fc);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+            max-width: 900px;
+            margin-bottom: 1.2rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #b9c3e6;
+            max-width: 700px;
+            margin-bottom: 2rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(95deg, #4f46e5, #7c3aed);
+            border: none;
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-size: 1rem;
+            box-shadow: 0 8px 18px rgba(79, 70, 229, 0.3);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px -8px rgba(79, 70, 229, 0.5);
+            background: linear-gradient(95deg, #6366f1, #8b5cf6);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid rgba(165, 180, 252, 0.7);
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+            color: #e0e7ff;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-outline:hover {
+            background: rgba(129, 140, 248, 0.15);
+            border-color: #a5b4fc;
+            transform: translateY(-2px);
+            backdrop-filter: blur(4px);
+        }
+
+        /* 服务卡片区域 */
+        .section-title {
+            text-align: center;
+            font-size: 2.4rem;
+            font-weight: 700;
+            margin: 4rem 0 1rem;
+            background: linear-gradient(135deg, #f0f3fa, #cbd5e1);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .section-sub {
+            text-align: center;
+            color: #94a3b8;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0 4rem;
+        }
+
+        .card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            padding: 2rem 1.8rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.4);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(129, 140, 248, 0.4);
+            background: rgba(20, 28, 52, 0.75);
+            box-shadow: 0 25px 40px -15px rgba(79, 70, 229, 0.25);
+        }
+
+        .card-icon {
+            font-size: 2.8rem;
+            margin-bottom: 1.2rem;
+            display: inline-block;
+        }
+
+        .card h3 {
+            font-size: 1.7rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .card p {
+            color: #cbd5e6;
+            margin-bottom: 1.2rem;
+            line-height: 1.5;
+        }
+
+        .card-link {
+            color: #a5b4fc;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: gap 0.2s;
+        }
+
+        .card-link:hover {
+            gap: 12px;
+            color: #d9e2ff;
+        }
+
+        /* 联系表单区域 */
+        .contact-section {
+            background: rgba(10, 14, 30, 0.6);
+            backdrop-filter: blur(16px);
+            border-radius: 2.5rem;
+            margin: 3rem 0 5rem;
+            padding: 3rem 2rem;
+            border: 1px solid rgba(129, 140, 248, 0.2);
+            box-shadow: 0 20px 35px -10px black;
+        }
+
+        .form-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            max-width: 800px;
+            margin: 2rem auto 0;
+        }
+
+        .input-group {
+            flex: 1 1 220px;
+        }
+
+        .input-group.full-width {
+            flex: 1 1 100%;
+        }
+
+        input, textarea {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid #334155;
+            padding: 0.9rem 1.2rem;
+            border-radius: 1.8rem;
+            color: #f1f5f9;
+            font-size: 1rem;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #818cf8;
+            box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.3);
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        textarea {
+            border-radius: 1.5rem;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: linear-gradient(120deg, #6366f1, #8b5cf6);
+            color: white;
+            border: none;
+            padding: 0.9rem 2rem;
+            border-radius: 3rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            width: auto;
+            min-width: 160px;
+            box-shadow: 0 5px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.02);
+            background: linear-gradient(120deg, #818cf8, #a78bfa);
+            box-shadow: 0 8px 20px rgba(129, 140, 248, 0.5);
+        }
+
+        .form-feedback {
+            text-align: center;
+            margin-top: 1.2rem;
+            color: #a5f3c3;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            margin-top: 2rem;
+            color: #7e8aa8;
+            font-size: 0.85rem;
+        }
+
+        footer a {
+            color: #a5b4fc;
+            text-decoration: none;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            .nav-links {
+                gap: 1.5rem;
+            }
+            .hero h1 {
+                font-size: 2.4rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .section-title {
+                font-size: 1.9rem;
+            }
+            .cards-grid {
+                gap: 1.5rem;
+            }
+            .contact-section {
+                padding: 2rem 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .btn-group {
+                flex-direction: column;
+                align-items: center;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .container {
+                padding: 0 1.2rem;
+            }
+        }
+
+        /* 点缀动画 */
+        @keyframes subtlePulse {
+            0% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+        .glow-text {
+            animation: subtlePulse 3s infinite alternate;
+        }
+    </style>
+</head>
+<body>
+<div class="glow-bg"></div>
+
+<nav class="navbar">
+    <div class="logo">✦ STARDUST STUDIO</div>
+    <ul class="nav-links">
+        <li><a href="#home">首页</a></li>
+        <li><a href="#services">服务</a></li>
+        <li><a href="#contact">联系</a></li>
+    </ul>
+</nav>
+
+<main>
+    <!-- Hero 区域，锚点 home -->
+    <div id="home"></div>
+    <div class="container">
+        <section class="hero">
+            <span class="hero-badge">✨ AI 时代创意工坊</span>
+            <h1>重塑数字边界<br>创造非凡体验</h1>
+            <p>我们融合前沿技术、极致设计与灵动叙事，帮助品牌在数字浪潮中脱颖而出。从概念到落地，每一行代码都是艺术。</p>
+            <div class="btn-group">
+                <a href="#services" class="btn-primary">探索服务 →</a>
+                <a href="#contact" class="btn-outline">预约咨询</a>
+            </div>
+        </section>
+
+        <!-- 服务展示部分 -->
+        <div id="services"></div>
+        <h2 class="section-title">核心专长</h2>
+        <p class="section-sub">我们提供深度定制的一站式数字解决方案</p>
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-icon">🎨</div>
+                <h3>沉浸式设计</h3>
+                <p>世界级的UI/UX与动效设计，打造令人过目不忘的品牌交互体验，提升用户粘性与转化率。</p>
+                <a href="#" class="card-link" id="learnMore1">了解更多 →</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">⚡</div>
+                <h3>智能开发</h3>
+                <p>全栈现代Web应用、响应式架构与AI融合，性能至上，确保产品在任何设备上都流畅完美。</p>
+                <a href="#" class="card-link" id="learnMore2">了解更多 →</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">🚀</div>
+                <h3>增长策略</h3>
+                <p>数据驱动的营销引擎、SEO优化与转化率优化服务，让您的数字资产实现持续获客与增长。</p>
+                <a href="#" class="card-link" id="learnMore3">了解更多 →</a>
+            </div>
+        </div>
+
+        <!-- 联系表单区块 -->
+        <div id="contact"></div>
+        <div class="contact-section">
+            <h2 class="section-title" style="margin-top: 0; margin-bottom: 0.5rem;">启程 · 对话未来</h2>
+            <p class="section-sub" style="margin-bottom: 1rem;">一起探讨您的下一个灵感项目</p>
+            <form id="demoForm" action="#" method="post">
+                <div class="form-grid">
+                    <div class="input-group">
+                        <input type="text" id="name" placeholder="您的姓名" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="email" id="email" placeholder="电子邮箱" required>
+                    </div>
+                    <div class="input-group full-width">
+                        <textarea rows="3" id="message" placeholder="简单介绍一下您的需求或想法..."></textarea>
+                    </div>
+                    <div style="display: flex; justify-content: center; width: 100%;">
+                        <button type="submit" class="submit-btn">发送灵感 💡</button>
+                    </div>
+                    <div class="form-feedback" id="formFeedback"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>© 2025 星尘研习社 · 以想象力驱动创造 | 虚构品牌 · 灵感演示站</p>
+    <p style="margin-top: 0.5rem;">✧ 极致匠心 · 构筑未来数字景观 ✧</p>
+</footer>
+
+<script>
+    // 卡片“了解更多”模拟提示（优雅演示）
+    const cardBtns = document.querySelectorAll('.card-link');
+    cardBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            // 小巧的自定义通知 而不是粗暴alert，提升体验
+            showFloatingMessage('✨ 更多细节即将呈现 • 欢迎直接联络我们', '#a5b4fc');
+        });
+    });
+
+    // 浮层消息工具 (非侵入小提示)
+    function showFloatingMessage(msg, color = '#c7d2fe') {
+        // 如果已经存在临时提示则移除旧的重新生成
+        let existing = document.querySelector('.floating-toast');
+        if(existing) existing.remove();
+        
+        const toast = document.createElement('div');
+        toast.className = 'floating-toast';
+        toast.textContent = msg;
+        toast.style.position = 'fixed';
+        toast.style.bottom = '30px';
+        toast.style.left = '50%';
+        toast.style.transform = 'translateX(-50%)';
+        toast.style.backgroundColor = '#0f172ad9';
+        toast.style.backdropFilter = 'blur(12px)';
+        toast.style.color = color;
+        toast.style.padding = '0.8rem 1.6rem';
+        toast.style.borderRadius = '60px';
+        toast.style.fontSize = '0.9rem';
+        toast.style.fontWeight = '500';
+        toast.style.border = `1px solid ${color}40`;
+        toast.style.boxShadow = '0 8px 20px rgba(0,0,0,0.3)';
+        toast.style.zIndex = '9999';
+        toast.style.letterSpacing = '0.3px';
+        toast.style.fontFamily = 'inherit';
+        toast.style.whiteSpace = 'nowrap';
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transition = 'opacity 0.3s ease';
+            setTimeout(() => {
+                if(toast && toast.remove) toast.remove();
+            }, 300);
+        }, 2500);
+    }
+
+    // 表单提交处理 (演示反馈)
+    const contactForm = document.getElementById('demoForm');
+    const feedbackDiv = document.getElementById('formFeedback');
+    
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const messageInput = document.getElementById('message');
+        
+        const name = nameInput.value.trim();
+        const email = emailInput.value.trim();
+        const message = messageInput.value.trim();
+        
+        // 简单验证
+        if (!name || !email) {
+            feedbackDiv.innerHTML = '❄️ 请填写姓名和邮箱，以便我们联络您～';
+            feedbackDiv.style.color = '#fda4af';
+            setTimeout(() => {
+                if(feedbackDiv.innerHTML === '❄️ 请填写姓名和邮箱，以便我们联络您～') {
+                    feedbackDiv.innerHTML = '';
+                }
+            }, 2800);
+            return;
+        }
+        
+        const emailPattern = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+            feedbackDiv.innerHTML = '📧 邮箱格式似乎有些特别，再确认一下？';
+            feedbackDiv.style.color = '#fda4af';
+            setTimeout(() => {
+                if(feedbackDiv.innerHTML === '📧 邮箱格式似乎有些特别，再确认一下？') {
+                    feedbackDiv.innerHTML = '';
+                }
+            }, 2800);
+            return;
+        }
+        
+        // 成功反馈（演示效果）
+        feedbackDiv.innerHTML = '✨ 星尘已收到消息！我们会在24h内与您畅谈创意 ✨';
+        feedbackDiv.style.color = '#bef264';
+        
+        // 模拟清空表单 (可选，为体验可以不自动清空，让用户看到成功)
+        // 仅清空部分保持友好，不清除也可以继续展示，但为了整洁可以不清，但显示成功足够了。
+        // 附加一个额外浮层提示
+        showFloatingMessage(`感谢 ${name}！灵感旅程即将启程 🌟`, '#bef264');
+        
+        // 可选重置但为了演示保留数据
+        // 这里我们不清除表单内容，方便用户看到自己输入，只重置反馈并在几秒后清除文本
+        setTimeout(() => {
+            if(feedbackDiv.innerHTML === '✨ 星尘已收到消息！我们会在24h内与您畅谈创意 ✨') {
+                feedbackDiv.innerHTML = '';
+            }
+        }, 4000);
+        
+        // 实际项目中可提交接口，此处仅为展示交互
+        // 如果希望清空表单（演示更干净，但有些人不喜欢自动清空，选择不清）
+        // 决定保留内容，用户可手动清空。
+    });
+    
+    // 平滑滚动增强 (处理导航和锚点)
+    document.querySelectorAll('.nav-links a, .btn-primary, .btn-outline[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const targetId = this.getAttribute('href');
+            if (targetId && targetId.startsWith('#') && targetId !== '#') {
+                e.preventDefault();
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }
+        });
+    });
+    
+    // 额外处理 "预约咨询" 按钮 (就是跳转到contact区域)
+    const consultBtn = document.querySelector('.btn-outline[href="#contact"]');
+    if(consultBtn) {
+        consultBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const contactSection = document.getElementById('contact');
+            if(contactSection) {
+                contactSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
+    
+    // 探索服务 按钮导向服务区
+    const exploreBtn = document.querySelector('.btn-primary[href="#services"]');
+    if(exploreBtn) {
+        exploreBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const servicesSection = document.getElementById('services');
+            if(servicesSection) {
+                servicesSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
+    
+    // 给卡片上的了解更多增加一个吸引点击效果，已经实现了全局消息。
+    // 可添加初始化动态欢迎问候（控制台友好）
+    console.log('%c✨ 星尘研习社 | 沉浸式创意工坊已启动 ✨', 'color: #a5b4fc; font-size: 16px; font-weight: bold;');
+    
+    // 添加动态时间给footer年份自动保持最新（但已有2025，无需变动，仍展示2025以体现风格）
+    // 轻量鼠标发光跟随特效（极小点缀）
+    const mouseGlow = document.createElement('div');
+    mouseGlow.style.position = 'fixed';
+    mouseGlow.style.width = '180px';
+    mouseGlow.style.height = '180px';
+    mouseGlow.style.background = 'radial-gradient(circle, rgba(129,140,248,0.15) 0%, rgba(0,0,0,0) 70%)';
+    mouseGlow.style.borderRadius = '50%';
+    mouseGlow.style.pointerEvents = 'none';
+    mouseGlow.style.zIndex = '9998';
+    mouseGlow.style.transition = 'transform 0.05s linear';
+    mouseGlow.style.transform = 'translate(-50%, -50%)';
+    document.body.appendChild(mouseGlow);
+    
+    document.addEventListener('mousemove', (e) => {
+        mouseGlow.style.left = e.clientX + 'px';
+        mouseGlow.style.top = e.clientY + 'px';
+    });
+    
+    // 为了性能，鼠标移出时隐藏，移入显示
+    document.body.addEventListener('mouseleave', () => {
+        mouseGlow.style.opacity = '0';
+    });
+    document.body.addEventListener('mouseenter', () => {
+        mouseGlow.style.opacity = '1';
+    });
+</script>
+</body>
+</html>
